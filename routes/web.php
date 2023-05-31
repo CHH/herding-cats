@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Date;
@@ -32,6 +33,8 @@ Route::get('/dashboard', function () {
         'date' => Date::now()->endOfDay(24)->toISOString(),
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('animals', AnimalController::class)->middleware('auth');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
