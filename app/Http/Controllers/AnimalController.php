@@ -12,13 +12,14 @@ class AnimalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $animals = Animal::query()
             ->orderBy('name')
+            ->when($request->species, fn ($query, $species) => $query->where('species', $species))
             ->get();
 
-        return Inertia::render('Animal/Index', compact('animals'));
+        return inertia('Animal/Index', compact('animals'));
     }
 
     /**
@@ -26,7 +27,7 @@ class AnimalController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Animal/Create');
+        return inertia('Animal/Create');
     }
 
     /**
@@ -44,7 +45,7 @@ class AnimalController extends Controller
      */
     public function show(Animal $animal)
     {
-        return Inertia::render('Animal/Edit', compact('animal'));
+        return inertia('Animal/Edit', compact('animal'));
     }
 
     /**
@@ -52,7 +53,7 @@ class AnimalController extends Controller
      */
     public function edit(Animal $animal)
     {
-        return Inertia::render('Animal/Edit', compact('animal'));
+        return inertia('Animal/Edit', compact('animal'));
     }
 
     /**
@@ -71,6 +72,8 @@ class AnimalController extends Controller
      */
     public function destroy(Animal $animal)
     {
-        //
+        $animal->delete();
+
+        return redirect()->route('animals.index');
     }
 }

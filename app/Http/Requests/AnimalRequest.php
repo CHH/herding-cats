@@ -32,4 +32,9 @@ class AnimalRequest extends FormRequest
             'death_at' => ['nullable', 'date'],
         ];
     }
+
+    public function attributes()
+    {
+        return [];
+    }
 }

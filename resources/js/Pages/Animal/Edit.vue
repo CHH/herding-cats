@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Link, useForm } from '@inertiajs/vue3'
+import { Link, useForm, Head } from '@inertiajs/vue3'
 import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
 import TextInput from '@/Components/TextInput.vue'
@@ -21,6 +21,8 @@ const createAnimal = () => {
 </script>
 
 <template>
+    <Head :title="`Edit Animal: ${animal.name}`"></Head>
+
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center">

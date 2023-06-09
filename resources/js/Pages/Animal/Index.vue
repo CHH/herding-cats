@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Link } from '@inertiajs/vue3'
+import { Link, useForm, Head } from '@inertiajs/vue3'
+import SecondaryButton from '@/Components/SecondaryButton.vue'
 
 const { animals } = defineProps({
     animals: {
@@ -16,9 +17,22 @@ const animalIcon = (animal) => {
 
     return `fa-${animal.species}`
 }
+
+const form = useForm({
+    species: route().params?.species ?? '',
+})
+
+const submit = () => {
+    form.get(route('animals.index'), {
+        preserveState: true,
+        only: ['animals']
+    })
+}
 </script>
 
 <template>
+    <Head title="Animals"></Head>
+
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center">
@@ -29,7 +43,28 @@ const animalIcon = (animal) => {
         </template>
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <div class="bg-white shadow rounded divide-y">
+            <form class="flex items-center gap-4" @submit.prevent="submit()">
+                <b>Filter:</b>
+
+                <select
+                    name="species"
+                    id="species"
+                    v-model="form.species"
+                    class="border-gray-300 focus:border-purple-200 focus:ring-purple-500 rounded-md shadow-sm"
+                >
+                    <option value="">Select Species</option>
+                    <option value="cat">Cat</option>
+                    <option value="dog">Dog</option>
+                    <option value="cow">Cow</option>
+                    <option value="chicken">Chicken</option>
+                    <option value="duck">Duck</option>
+                    <option value="pig">Pig</option>
+                </select>
+
+                <SecondaryButton type="submit">Apply</SecondaryButton>
+            </form>
+
+            <div class="bg-white shadow rounded divide-y mt-4">
                 <div
                     v-for="animal in animals" :key="animal.id"
                     class="grid grid-cols-12 gap-4 group hover:bg-gray-50 transition-colors duration-150"
