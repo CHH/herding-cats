@@ -1,4 +1,6 @@
 import './bootstrap';
+import '@fortawesome/fontawesome-pro/css/fontawesome.css'
+import '@fortawesome/fontawesome-pro/css/sharp-light.css'
 import '../css/app.css';
 
 import { createApp, h } from 'vue';

@@ -5,10 +5,16 @@ import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
 import TextInput from '@/Components/TextInput.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
+import AnimalForm from './Partials/AnimalForm.vue'
 
 const form = useForm({
     name: '',
     species: '',
+    icon: '',
+    birthday: null,
+    bought_at: null,
+    sold_at: null,
+    day_of_death: null,
 })
 
 const createAnimal = () => {
@@ -18,42 +24,19 @@ const createAnimal = () => {
 
 <template>
     <AuthenticatedLayout>
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <div class="flex items-center my-6 lg:my-8">
-                <h2 class="flex-auto text-3xl">Create Animal</h2>
+        <template #header>
+            <div class="flex items-center">
+                <h2 class="font-semibold text-xl flex-auto text-gray-800 leading-tight">Create Animal</h2>
             </div>
+        </template>
 
+        <div class="max-w-7xl mx-auto p-6 lg:p-8">
             <form @submit.prevent="createAnimal">
-                <div>
-                    <InputLabel for="name" value="Name" />
+                <AnimalForm v-model="form"></AnimalForm>
 
-                    <TextInput
-                        id="name"
-                        v-model="form.name"
-                        type="text"
-                        class="mt-1 block w-full"
-                    />
-
-                    <InputError :message="form.errors.name" class="mt-2" />
+                <div class="mt-3">
+                    <PrimaryButton>Create</PrimaryButton>
                 </div>
-
-                <div>
-                    <InputLabel for="species" value="Species" />
-
-                    <select
-                        name="species"
-                        id="species"
-                        v-model="form.species"
-                    >
-                        <option value="">Select Species</option>
-                        <option value="cat">Cat</option>
-                        <option value="dog">Dog</option>
-                    </select>
-
-                    <InputError :message="form.errors.species" class="mt-2" />
-                </div>
-
-                <PrimaryButton>Create</PrimaryButton>
             </form>
         </div>
     </AuthenticatedLayout>

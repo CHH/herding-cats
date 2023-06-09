@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('species');
+            $table->string('icon')->nullable();
             $table->text('notes')->nullable();
             $table->date('birthday_at')->nullable();
             $table->date('bought_at')->nullable();

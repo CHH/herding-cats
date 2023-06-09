@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnimalRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Animal;
@@ -31,14 +32,9 @@ class AnimalController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AnimalRequest $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'species' => ['required', 'in:cat,dog,other'],
-        ]);
-
-        Animal::create($validated);
+        Animal::create($request->validated());
 
         return redirect()->route('animals.index');
     }
@@ -62,19 +58,9 @@ class AnimalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Animal $animal)
+    public function update(AnimalRequest $request, Animal $animal)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'max:255'],
-            'species' => ['required', 'in:cat,dog,other'],
-            'birthday_at' => ['nullable', 'date'],
-            'notes' => ['nullable', 'string'],
-            'bought_at' => ['nullable', 'date'],
-            'sold_at' => ['nullable', 'date'],
-            'death_at' => ['nullable', 'date'],
-        ]);
-
-        $animal->fill($validated);
+        $animal->fill($request->validated());
         $animal->save();
 
         return redirect()->route('animals.index');

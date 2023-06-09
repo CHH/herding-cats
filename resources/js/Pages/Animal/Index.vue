@@ -8,38 +8,49 @@ const { animals } = defineProps({
         required: true,
     },
 })
+
+const animalIcon = (animal) => {
+    if (animal.species === 'chicken') {
+        return 'fa-bird'
+    }
+
+    return `fa-${animal.species}`
+}
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <div class="flex items-center my-6 lg:my-8">
-                <h2 class="flex-auto text-3xl">Animals</h2>
+        <template #header>
+            <div class="flex items-center">
+                <h2 class="font-semibold text-xl flex-auto text-gray-800 leading-tight">Animals</h2>
 
-                <Link :href="route('animals.create')">Create</Link>
+                <Link :href="route('animals.create')" class="bg-purple-500 px-3 py-2 rounded shadow text-purple-50">Create</Link>
             </div>
+        </template>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
+        <div class="max-w-7xl mx-auto p-6 lg:p-8">
+            <div class="bg-white shadow rounded divide-y">
+                <div
+                    v-for="animal in animals" :key="animal.id"
+                    class="grid grid-cols-12 gap-4 group hover:bg-gray-50 transition-colors duration-150"
+                >
+                    <div class="col-span-9 p-3 flex space-x-4 items-center">
+                        <i class="fa-sharp fa-light fa-2x fa-fw" :class="animalIcon(animal)"></i>
 
-                        <th>Name</th>
-                    </tr>
-                </thead>
+                        <div>
+                            <b>{{ animal.name }}</b>
 
-                <tbody>
-                    <tr v-for="animal in animals" :key="animal.id">
-                        <td>
-                            {{ animal.id }}
-                        </td>
+                            <span class="ml-2 text-gray-500">
+                                <i v-if="animal.icon" class="fa-sharp" :class="animal.icon" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    </div>
 
-                        <td>
-                            {{ animal.name }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    <div class="p-3 col-span-3 opacity-0 group-hover:opacity-100 flex justify-end items-center">
+                        <Link :href="route('animals.edit', animal.id)" class="bg-white shadow py-2 px-3 text-sm inline-block rounded">Edit</Link>
+                    </div>
+                </div>
+            </div>
         </div>
     </AuthenticatedLayout>
 </template>
