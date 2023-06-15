@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Link, useForm, Head } from '@inertiajs/vue3'
 import SecondaryButton from '@/Components/SecondaryButton.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const { animals } = defineProps({
     animals: {
@@ -22,11 +23,16 @@ const form = useForm({
     species: route().params?.species ?? '',
 })
 
-const submit = () => {
+const submitFilter = () => {
     form.get(route('animals.index'), {
         preserveState: true,
         only: ['animals']
     })
+}
+
+const resetFilter = () => {
+    form.species = ''
+    submitFilter()
 }
 </script>
 
@@ -38,12 +44,12 @@ const submit = () => {
             <div class="flex items-center">
                 <h2 class="font-semibold text-xl flex-auto text-gray-800 leading-tight">Animals</h2>
 
-                <Link :href="route('animals.create')" class="bg-purple-500 px-3 py-2 rounded shadow text-purple-50">Create</Link>
+                <Link :href="route('animals.create')" class="bg-purple-500 px-3 py-2 rounded shadow text-purple-50 font-semibold">Create</Link>
             </div>
         </template>
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <form class="flex items-center gap-4" @submit.prevent="submit()">
+            <form class="flex items-center gap-4" @submit.prevent="submitFilter()">
                 <b>Filter:</b>
 
                 <select
@@ -61,7 +67,8 @@ const submit = () => {
                     <option value="pig">Pig</option>
                 </select>
 
-                <SecondaryButton type="submit">Apply</SecondaryButton>
+                <PrimaryButton type="submit">Apply</PrimaryButton>
+                <SecondaryButton type="button" @click="resetFilter()">Reset</SecondaryButton>
             </form>
 
             <div class="bg-white shadow rounded divide-y mt-4">

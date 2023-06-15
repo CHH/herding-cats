@@ -37,7 +37,7 @@ const createAnimal = () => {
                 <AnimalForm v-model="form"></AnimalForm>
 
                 <div class="mt-3">
-                    <PrimaryButton>Create</PrimaryButton>
+                    <PrimaryButton :disabled="form.processing">Create</PrimaryButton>
                 </div>
             </form>
         </div>

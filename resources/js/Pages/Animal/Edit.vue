@@ -1,10 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
-import { Link, useForm, Head } from '@inertiajs/vue3'
+import { Link, useForm, Head, router } from '@inertiajs/vue3'
 import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
 import TextInput from '@/Components/TextInput.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
+import SecondaryButton from '@/Components/SecondaryButton.vue'
+import DangerButton from '@/Components/DangerButton.vue'
 import AnimalForm from './Partials/AnimalForm.vue'
 
 const { animal } = defineProps({
@@ -17,6 +19,12 @@ const form = useForm(animal)
 
 const createAnimal = () => {
     form.put(route('animals.update', animal.id))
+}
+
+const deleteAnimal = () => {
+    if (confirm('Do you really want to delete this animal?')) {
+        router.delete(route('animals.destroy', animal.id))
+    }
 }
 </script>
 
@@ -35,9 +43,12 @@ const createAnimal = () => {
                 <AnimalForm v-model="form"></AnimalForm>
 
                 <div class="mt-3 flex gap-4 items-center">
-                    <PrimaryButton>Save</PrimaryButton>
-
+                    <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
                     <Link :href="route('animals.index')">Cancel</Link>
+
+                    <span class="flex-auto" aria-hidden="true"></span>
+
+                    <DangerButton type="button" @click="deleteAnimal()">Delete</DangerButton>
                 </div>
             </form>
         </div>
