@@ -35,6 +35,8 @@ class AnimalController extends Controller
      */
     public function store(AnimalRequest $request)
     {
+        $this->authorize('create', Animal::class);
+
         Animal::create($request->validated());
 
         return redirect()->route('animals.index');
